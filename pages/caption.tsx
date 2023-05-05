@@ -90,6 +90,7 @@ const Home: NextPage = () => {
     });
 
     let newAltText = await res.json();
+    console.log();
     if (res.status !== 200) {
       setError(newAltText);
     } else {
