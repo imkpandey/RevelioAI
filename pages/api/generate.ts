@@ -77,9 +77,7 @@ export default async function handler(
       caption = jsonFinalResponse.output;
     } else if (jsonFinalResponse.status === "failed") {
       break;
-    } else {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-    }
+    } 
   }
   res.status(200).json(caption ? caption : "Failed to generate caption");
 }
