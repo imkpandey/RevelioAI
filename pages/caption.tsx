@@ -9,6 +9,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Uploader } from "uploader";
 import { UploadDropzone } from "react-uploader";
 
+import NSFWPredictor from "../utils/nsfwCheck";
+import va from "@vercel/analytics";
+
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import LoadingDots from "../components/LoadingDots";
@@ -43,6 +46,18 @@ const options = {
       shade800: "#fff1", // File item background
       shade900: "#ffff", // Various (draggable crop buttons, etc.)
     },
+  },
+  onValidate: async (file: File): Promise<undefined | string> => {
+    let isSafe = false;
+    try {
+      isSafe = await NSFWPredictor.isSafeImg(file);
+      if (!isSafe) va.track("NSFW Image blocked");
+    } catch (error) {
+      console.error("NSFW predictor threw an error", error);
+    }
+    return isSafe
+      ? undefined
+      : "NSFW image detected";
   },
 };
 
