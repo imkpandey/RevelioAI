@@ -14,9 +14,6 @@ import Footer from "../components/Footer";
 import LoadingDots from "../components/LoadingDots";
 import ResizablePanel from "../components/ResizablePanel";
 
-import NSFWPredictor from "../utils/nsfwCheck";
-import va from "@vercel/analytics";
-
 import { HiOutlineClipboardDocument } from "react-icons/hi2";
 
 React.useLayoutEffect = React.useEffect;
@@ -46,18 +43,6 @@ const options = {
       shade800: "#fff1", // File item background
       shade900: "#ffff", // Various (draggable crop buttons, etc.)
     },
-  },
-  onValidate: async (file: File): Promise<undefined | string> => {
-    let isSafe = false;
-    try {
-      isSafe = await NSFWPredictor.isSafeImg(file);
-      if (!isSafe) va.track("NSFW Image blocked");
-    } catch (error) {
-      console.error("NSFW predictor threw an error", error);
-    }
-    return isSafe
-      ? undefined
-      : "Detected a NSFW image which is not allowed. If this was a mistake, please contact me at hosna.qasmei@gmail.com";
   },
 };
 
